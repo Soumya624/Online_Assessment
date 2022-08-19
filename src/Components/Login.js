@@ -47,105 +47,60 @@ function Login() {
   const [password, setPassword] = useState(null);
   const [otp, setOtp] = useState(null);
   const [phone, setPhone] = useState(null);
-  const [ msg, setMsg ] = useState(null)
-
+  const [msg, setMsg] = useState(null);
 
   function setCookie(cname, cvalue, exdays) {
     const d = new Date();
-    d.setTime(d.getTime() + (exdays*24*60*60*1000));
-    let expires = "expires="+ d.toUTCString();
+    d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
+    let expires = "expires=" + d.toUTCString();
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
   }
 
   function submit(e) {
     e.preventDefault();
-    let dataTwo = {
-      phone: phone,
-      otp: otp,
-    };
     let dataThree = {
       username: username,
-      password: otp,
+      password: password,
     };
-    console.log(dataTwo);
-    console.log(dataThree);
-    axiosInstance
-      .post("/auth/verify-otp/", dataTwo)
-      .then((res) => {
-        console.log(res);
-        console.log(res.data);
-        if(res.data.status == false)
-        setMsg(
-          {
-            is_error : !res.data.status,
-            msg : res.data.detail
-          }
-        )
-        setTimeout(()=>{
-          setMsg(null)
-        },1000)
-      })
-      .catch((err) => {
-        console.log(err);
-        setMsg(
-          {
-            is_error : true,
-            msg : "Error"
-          }
-        )
-
-        setTimeout(()=>{
-          setMsg(null)
-        },1000)
-      });
-
     axiosInstance
       .post("/auth/login/", dataThree)
       .then((res) => {
         console.log(res);
         console.log(res.data);
 
-        setMsg(
-          {
-            is_error : false,
-            msg : "Successfully logged in"
-          }
-        )
+        setMsg({
+          is_error: false,
+          msg: "Successfully Logged In",
+        });
 
-        let token = res.data.token
-        let user_data = res.data.user
+        let token = res.data.token;
+        let user_data = res.data.user;
 
-        localStorage.setItem("user" , JSON.stringify(user_data))
+        localStorage.setItem("user", JSON.stringify(user_data));
 
-        setCookie(`access_token` ,`${token.access}`,1);
-        setCookie(`refresh` ,`${token.refresh}`,1);
+        setCookie(`access_token`, `${token.access}`, 1);
+        setCookie(`refresh`, `${token.refresh}`, 1);
 
-        setTimeout(()=>{
-          setMsg(null)
-        },1000)
-        
-        let user_type = user_data.user_type
+        setTimeout(() => {
+          setMsg(null);
+        }, 1000);
 
-        window.location = `/${user_type}`
+        let user_type = user_data.user_type;
 
-
+        window.location = `/${user_type}`;
       })
       .catch((err) => {
         console.log(err);
-        setMsg(
-          {
-            is_error : true,
-            msg : "Error"
-          }
-        )
+        setMsg({
+          is_error: true,
+          msg: "Error",
+        });
 
-        setTimeout(()=>{
-          setMsg(null)
-        },1000)
+        setTimeout(() => {
+          setMsg(null);
+        }, 1000);
       });
   }
-
-
 
   return (
     <div
@@ -188,14 +143,14 @@ function Login() {
                 />
               </Form.Group>
               <br />
-              <Form.Group controlId="formBasicNumber">
+              <Form.Group controlId="formBasicPassword">
                 <Form.Control
-                  type="text"
-                  placeholder="Enter Your Mobile Number"
+                  type="password"
+                  placeholder="Enter Your Password"
                   style={{ borderRadius: "20px" }}
                   onChange={(e) => {
                     e.preventDefault();
-                    setPhone(e.target.value);
+                    setPassword(e.target.value);
                   }}
                 />
               </Form.Group>
@@ -205,11 +160,15 @@ function Login() {
               </Form.Group>
               <br />
               <center>
-              { msg && <Alert variant={msg.is_error ? "danger" : "success"}>{msg.msg}</Alert>}
+                {msg && (
+                  <Alert variant={msg.is_error ? "danger" : "success"}>
+                    {msg.msg}
+                  </Alert>
+                )}
                 <Button
                   variant="outline-primary"
                   style={{ margin: "1%", borderRadius: "20px", width: "30%" }}
-                  onClick={handleShow}
+                  onClick={submit}
                 >
                   Submit
                 </Button>
@@ -254,7 +213,11 @@ function Login() {
           </Form.Group>
           <br />
           <center>
-            { msg && <Alert variant={msg.is_error ? "danger" : "success"}>{msg.msg}</Alert>}
+            {msg && (
+              <Alert variant={msg.is_error ? "danger" : "success"}>
+                {msg.msg}
+              </Alert>
+            )}
             <Button
               variant="outline-primary"
               style={{ margin: "1%", borderRadius: "20px", width: "30%" }}
