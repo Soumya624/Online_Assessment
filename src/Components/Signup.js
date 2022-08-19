@@ -37,6 +37,7 @@ function Login() {
   const [last_name, setLast_name] = useState(null);
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
+  const [password2, setPassword2] = useState(null);
   const [phone_number, setPhone_number] = useState(null);
   const [telephone_number, setTelephone_number] = useState(null);
   const [aadhar_number, setAadhar_number] = useState(null);
@@ -48,23 +49,6 @@ function Login() {
   const [zip, setZip] = useState(null);
   const [msg, setMsg] = useState(null);
   const [otp, setOtp] = useState(null);
-
-  function submit(e) {
-    e.preventDefault();
-    let dataOne = {
-      phone: phone_number,
-    };
-    axiosInstance
-      .post("/auth/verify/", dataOne)
-      .then((res) => {
-        console.log(res);
-        console.log(res.data);
-        setShow(true);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
 
   async function register_user(e) {
     e.preventDefault();
@@ -84,14 +68,13 @@ function Login() {
       zip_code: zip,
       user_type: "student",
       username: email,
-      password2: password,
+      password2: password2,
     };
     axiosInstance
       .post("/auth/register/", data)
       .then((res) => {
         console.log(res);
         console.log(res.data);
-        alert("Registered Successfully");
         setMsg({
           is_error: false,
           msg: "Success!!",
@@ -107,43 +90,6 @@ function Login() {
         setMsg({
           is_error: true,
           msg: JSON.stringify(err.response.data),
-        });
-
-        setTimeout(() => {
-          setMsg(null);
-        }, 1000);
-      });
-  }
-
-  function submitOtp(e) {
-    e.preventDefault();
-    let dataTwo = {
-      phone: phone_number,
-      otp: otp,
-    };
-    axiosInstance
-      .post("/auth/verify-otp/", dataTwo)
-      .then(async (res) => {
-        console.log(res);
-        console.log(res.data);
-        if (res.data.status) {
-          console.log("Successfully verified");
-          await register_user();
-        }
-        if (res.data.status == false)
-          setMsg({
-            is_error: !res.data.status,
-            msg: res.data.detail,
-          });
-        setTimeout(() => {
-          setMsg(null);
-        }, 1000);
-      })
-      .catch((err) => {
-        console.log(err);
-        setMsg({
-          is_error: true,
-          msg: "Error",
         });
 
         setTimeout(() => {
@@ -179,12 +125,13 @@ function Login() {
             />
           </Col>
           <Col md="6">
-            <Form>
+            <Form onSubmit={register_user}>
               <Form.Group controlId="formBasicName">
                 <Row>
                   <Col md="6">
                     <Form.Group controlId="formBasicFirstName">
                       <Form.Control
+                      required = {true}
                         type="text"
                         placeholder="Enter Your First Name"
                         style={{ borderRadius: "20px" }}
@@ -198,6 +145,7 @@ function Login() {
                   <Col md="6">
                     <Form.Group controlId="formBasicLastName">
                       <Form.Control
+                      required = {true}
                         type="text"
                         placeholder="Enter Your Last Name"
                         style={{ borderRadius: "20px" }}
@@ -212,9 +160,10 @@ function Login() {
               </Form.Group>
               <br />
               <Row>
-                <Col md="6">
+                <Col md="12">
                   <Form.Group controlId="formBasicEmail">
                     <Form.Control
+                    required = {true}
                       type="email"
                       placeholder="Enter Your Email ID"
                       style={{ borderRadius: "20px" }}
@@ -225,9 +174,13 @@ function Login() {
                     />
                   </Form.Group>
                 </Col>
-                <Col md="6">
+              </Row>
+              <br/>
+              <Row>
+              <Col md="6">
                   <Form.Group controlId="formBasicPassword">
                     <Form.Control
+                    required = {true}
                       type="password"
                       placeholder="Enter Your Password"
                       style={{ borderRadius: "20px" }}
@@ -238,12 +191,27 @@ function Login() {
                     />
                   </Form.Group>
                 </Col>
+                <Col md="6">
+                  <Form.Group controlId="formBasicPassword">
+                    <Form.Control
+                    required = {true}
+                      type="password"
+                      placeholder="Confirm Password"
+                      style={{ borderRadius: "20px" }}
+                      onChange={(e) => {
+                        e.preventDefault();
+                        setPassword2(e.target.value);
+                      }}
+                    />
+                  </Form.Group>
+                </Col>
               </Row>
               <br />
               <Row>
                 <Col md="6">
                   <Form.Group controlId="formBasicNumber">
                     <Form.Control
+                    required = {true}
                       type="text"
                       placeholder="Enter Phone Number"
                       style={{ borderRadius: "20px" }}
@@ -257,6 +225,7 @@ function Login() {
                 <Col md="6">
                   <Form.Group controlId="formBasicTelephone">
                     <Form.Control
+                    required = {true}
                       type="text"
                       placeholder="Enter Telephone Number"
                       style={{ borderRadius: "20px" }}
@@ -271,6 +240,7 @@ function Login() {
               <br />
               <Form.Group controlId="formBasicAadhar">
                 <Form.Control
+                required = {true}
                   type="text"
                   placeholder="Enter Your Aadhar Number"
                   style={{ borderRadius: "20px" }}
@@ -283,6 +253,7 @@ function Login() {
               <br />
               <Form.Group controlId="formBasicFather">
                 <Form.Control
+                required = {true}
                   type="text"
                   placeholder="Enter Your Father's Name"
                   style={{ borderRadius: "20px" }}
@@ -295,6 +266,7 @@ function Login() {
               <br />
               <Form.Group controlId="formBasicCountry">
                 <Form.Control
+                required = {true}
                   type="text"
                   placeholder="Enter Your Country"
                   style={{ borderRadius: "20px" }}
@@ -309,6 +281,7 @@ function Login() {
                 <Col md="6">
                   <Form.Group controlId="formBasicCity">
                     <Form.Control
+                    required = {true}
                       type="text"
                       placeholder="Enter Your City"
                       style={{ borderRadius: "20px" }}
@@ -322,6 +295,7 @@ function Login() {
                 <Col md="6">
                   <Form.Group controlId="formBasicState">
                     <Form.Control
+                    required = {true}
                       type="text"
                       placeholder="Enter Your State"
                       style={{ borderRadius: "20px" }}
@@ -338,6 +312,7 @@ function Login() {
                 <Col md="6">
                   <Form.Group controlId="formBasicStreet">
                     <Form.Control
+                    required = {true}
                       type="text"
                       placeholder="Enter Your Street"
                       style={{ borderRadius: "20px" }}
@@ -351,6 +326,7 @@ function Login() {
                 <Col md="6">
                   <Form.Group controlId="formBasicZip">
                     <Form.Control
+                    required = {true}
                       type="text"
                       placeholder="Enter Your Zip Code"
                       style={{ borderRadius: "20px" }}
@@ -378,9 +354,9 @@ function Login() {
                   </Alert>
                 )}
                 <Button
+                type="submit"
                   variant="outline-primary"
                   style={{ margin: "1%", borderRadius: "20px", width: "30%" }}
-                  onClick={register_user}
                 >
                   Submit
                 </Button>
@@ -402,51 +378,6 @@ function Login() {
           </Col>
         </Row>
       </Card>
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Body>
-          <center>
-            {" "}
-            <p>
-              <b>OTP Verification</b>
-            </p>
-          </center>
-
-          <br />
-          <Form.Group controlId="formBasicEmail">
-            <Form.Control
-              type="email"
-              placeholder="Enter the OTP Sent to Your Mobile Number"
-              style={{ borderRadius: "20px" }}
-              onChange={(e) => {
-                e.preventDefault();
-                setOtp(e.target.value);
-              }}
-            />
-          </Form.Group>
-          <br />
-          <center>
-            {msg && (
-              <Alert variant={msg.is_error ? "danger" : "success"}>
-                {msg.msg}
-              </Alert>
-            )}
-            <Button
-              variant="outline-primary"
-              style={{ margin: "1%", borderRadius: "20px", width: "30%" }}
-              onClick={submitOtp}
-            >
-              Submit
-            </Button>
-            <Button
-              variant="outline-primary"
-              style={{ margin: "1%", borderRadius: "20px", width: "30%" }}
-              onClick={handleClose}
-            >
-              Cancel
-            </Button>
-          </center>
-        </Modal.Body>
-      </Modal>
     </div>
   );
 }

@@ -47,6 +47,7 @@ const headers = {
   Authorization: `Bearer ${access}`,
   "Content-Type": "application/json",
 };
+// eslint-disable-next-line import/no-anonymous-default-export
 export default function () {
   const dispatch = useDispatch();
   var time = "";
@@ -108,7 +109,7 @@ export default function () {
       addTest(submitData, (res) => {
         if (res.status === 201) {
           console.log(res);
-          window.location = `/question/${res.data.unique_id}`;
+          window.location = `/upload/${res.data.unique_id}`;
         } else {
           console.log(res);
         }
@@ -334,9 +335,6 @@ export default function () {
               }}
               style={{ height: "5rem" }}
             />
-            <br />
-            <input type="file" id="myFile" name="filename" />
-            <br />
             <br />
             <div>
               <Row>

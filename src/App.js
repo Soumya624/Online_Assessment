@@ -28,6 +28,7 @@ import TeacherResult from "./Components/Teacher/result";
 import SignupAdmin from "./Components/SignupAdmin";
 import ProtectedRoute from "./ProtectedRoute";
 import NotFound from "./NotFound";
+import UploadQuestion from "./Components/Teacher/UploadQuestion";
 function App() {
 	const [show, setShow] = useState(false);
 	const handleClose = () => setShow(false);
@@ -57,6 +58,7 @@ function App() {
 					<Route path="/student" element={<ProtectedRoute />}>
 						<Route path="/student" element={<Student />} />
 					</Route>
+					<Route path="/upload/:id" element={<UploadQuestion/>}/>
 					<Route path="/question/:id" element={<ProtectedRoute />}>
 						<Route path="/question/:id" element={<Questions />} />
 					</Route>
