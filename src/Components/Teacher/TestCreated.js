@@ -1,9 +1,27 @@
 import { Card, Col, Button } from "react-bootstrap";
-
+import axiosInstance from "../../axiosInstance";
+import getCookie from "../../getCookies";
 function TestCreated(props) {
   console.log(props);
+  let access = getCookie("access_token");
+  const headers = {
+	Authorization: `Bearer ${access}`,
+	"Content-Type": "application/json",
+  };
+
   const handleRemoveItem = (e) => {
-    console.log(e.target.id);
+    console.log(props.test.unique_id);
+	axiosInstance.delete(`/api/tests/${props.test.unique_id}`,{
+		headers: headers,
+	}).then((res) => {
+		console.log(res);
+		if(res.status === 200){
+			window.location = "/teacher";
+		}
+	}
+	).catch((err) => {
+		console.log(err);
+	})
   };
   return (
     <Col md={4}>
