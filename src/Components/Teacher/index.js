@@ -19,14 +19,14 @@ import {
   Col,
   Modal,
   ButtonGroup,
-  FormControl
+  FormControl,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Img_Demo from "../Images/images.png";
 import TestCreated from "./TestCreated";
 import getCookie from "../../getCookies";
 import logout from "../../logout";
-import { useCountdownTimer } from 'use-countdown-timer';
+import { useCountdownTimer } from "use-countdown-timer";
 
 var data = {
   name: "",
@@ -335,54 +335,9 @@ export default function () {
               style={{ height: "5rem" }}
             />
             <br />
-            <Form.Group controlId="formBasicDiscipline">
-			<Form.Label>Enter Discipline</Form.Label>
-              <FormControl
-                type="text"
-                name="discipline"
-                list="discipline"
-                onChange={(e) => {
-                  e.preventDefault();
-				  submitData.discipline = e.target.value;
-				  setDiscipline(e.target.value);
-				  setSubmitData(submitData);
-                }}
-              />
-              <datalist id="discipline">
-                <option value="Agriculture" />
-                <option value="Allied Health Sciences" />
-                <option value="Anumation, VFX and Gaming Design" />
-                <option value="Architecture" />
-                <option value="Arts" />
-                <option value="Basic Science" />
-                <option value="Commerce" />
-                <option value="Computer Application" />
-                <option value="Dental" />
-                <option value="Design" />
-                <option value="Economics" />
-                <option value="Education" />
-                <option value="Engineering" />
-                <option value="Food Science" />
-                <option value="Law" />
-                <option value="Management" />
-                <option value="Mass Communication" />
-                <option value="Medical" />
-                <option value="Nursing" />
-                <option value="Pharmacy" />
-                <option value="Visual Arts" />
-              </datalist>
-            </Form.Group>
-			<br/>
-			{/* <Form.Label>Specify Time (In Seconds)</Form.Label>
-            <Form.Control
-              type="text"
-              autoComplete="off"
-              required={true}
-              onChange={(e) => {
-				e.preventDefault();
-              }}
-            />
-			<br/> */}
+            <input type="file" id="myFile" name="filename" />
+            <br />
+            <br />
             <div>
               <Row>
                 <Col xs={6}>
