@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import axiosInstance from "../axiosInstance";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -34,6 +35,7 @@ const headers = {
   "Content-Type": "application/json",
 };
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default function () {
 
   if(user.user_type === "teacher"){
@@ -55,15 +57,17 @@ export default function () {
   }
 
 
-  var name = user.name;
+  var name = `${user.first_name} ${user.last_name}`;
   // var subject = "Physics";
   // var description = "2022-04-13 10:00 AM to 2022-04-14 10:00 AM";
   // var time = "2 Days Ago";
   // var name = "Adam Smith";
   var identity = user.user_type.toUpperCase();
   var email = user.email;
+  var image_url = user.profile
+  console.log(user.profile)
   // var marks_obtained = "";
-  var phone = user.phone;
+  var phone = user.mobile_number;
   
 
   const [show, setShow] = useState(false);
@@ -145,22 +149,24 @@ export default function () {
           if(res.data.isFixed && ex_st.getTime() <= d_n.getTime() && d_n.getTime() <= ex_end.getTime() ){
             window.location.href = `/answer/${test_id}/${question_id}`;
           }    
-          else if(res.data.isFixed == false) window.location.href = `/answer/${test_id}/${question_id}`;
+          else if(res.data.isFixed === false) window.location.href = `/answer/${test_id}/${question_id}`;
           else alert("Test has'nt started yet....")
         }
       })
     );
   }
 
+  const host = 'http://127.0.0.1:8000'
+
   return (
-    <div style={{ backgroundColor: "white", overflowX: "hidden" }}>
+    <div style={{ backgroundColor: "white", overflowX: "hidden", }}>
       <Navbar
         bg="#f5f5f5"
         expand="lg"
         style={{ backgroundColor: "#f5f5f5", padding: "1% 2%" }}
       >
         <Container fluid style={{ backgroundColor: "#f5f5f5" }}>
-          <Navbar.Brand href="#">Hello User</Navbar.Brand>
+          <Navbar.Brand href={user.user_type}>Hello {name}</Navbar.Brand>
           <Navbar.Toggle aria-controls="navbarScroll" />
           <Navbar.Collapse id="navbarScroll">
             <Nav
@@ -246,12 +252,13 @@ export default function () {
             backgroundColor: "#f5f5f5",
             alignItems: "center",
             justifyContent: "center",
+            padding : "1%"
           }}
         >
           <center>
             <br />
             <br />
-            <img src={Img_Demo} style={{ width: "50%", borderRadius: "50%" }} />
+            <img src={`${host}${image_url}`} style={{ width: "50%", borderRadius: "50%" }} alt="Image Profile" />
             <br />
             <br />
             <br />
@@ -275,9 +282,11 @@ export default function () {
             <br />
             <br />
 
-            {/* <Button variant="outline-primary" style={{ borderRadius: "20px" }}>
+            <Button variant="outline-primary" style={{ borderRadius: "20px" }} onClick={()=>{
+              window.location = "/profile"
+            }}>
               Edit Profile
-            </Button> */}
+            </Button>
           </center>
         </Col>
       </Row>

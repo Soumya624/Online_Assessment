@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 import axiosInstance from "../../axiosInstance";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -51,9 +52,11 @@ const headers = {
 export default function () {
   const dispatch = useDispatch();
   var time = "";
-  var name = user.name;
+  var name = `${user.first_name} ${user.last_name}`;
   var email = user.email;
   var phone = user.phone;
+  var image_url = user.profile
+
 
   var identity = user.user_type.toUpperCase();
   if (identity === "STUDENT") {
@@ -138,6 +141,9 @@ export default function () {
   const { countdown, start, reset, pause, isRunning } = useCountdownTimer({
     timer: 1000 * 5,
   });
+
+  const host = 'http://127.0.0.1:8000'
+
   return (
     <div style={{ backgroundColor: "white", overflowX: "hidden" }}>
       <Navbar
@@ -146,7 +152,7 @@ export default function () {
         style={{ backgroundColor: "#f5f5f5", padding: "1% 2%" }}
       >
         <Container fluid style={{ backgroundColor: "#f5f5f5" }}>
-          <Navbar.Brand href="#">Hello User</Navbar.Brand>
+          <Navbar.Brand href={user.user_type}>Hello {name}</Navbar.Brand>
           <Navbar.Toggle aria-controls="navbarScroll" />
           <Navbar.Collapse id="navbarScroll">
             <Nav
@@ -208,12 +214,13 @@ export default function () {
             backgroundColor: "#f5f5f5",
             alignItems: "center",
             justifyContent: "center",
+            padding : "1%"
           }}
         >
           <center>
             <br />
             <br />
-            <img src={Img_Demo} style={{ width: "50%", borderRadius: "50%" }} />
+            <img src={`${host}${image_url}`} style={{ width: "50%", borderRadius: "50%" }} />
             <br />
             <br />
             <br />
@@ -237,9 +244,11 @@ export default function () {
             <br />
             <br />
 
-            {/* <Button variant="outline-primary" style={{ borderRadius: "20px" }}>
-							Edit Profile
-						</Button> */}
+            <Button variant="outline-primary" style={{ borderRadius: "20px" }} onClick={()=>{
+              window.location = "/profile"
+            }}>
+              Edit Profile
+            </Button>
           </center>
         </Col>
       </Row>

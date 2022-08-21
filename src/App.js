@@ -29,6 +29,7 @@ import SignupAdmin from "./Components/SignupAdmin";
 import ProtectedRoute from "./ProtectedRoute";
 import NotFound from "./NotFound";
 import UploadQuestion from "./Components/Teacher/UploadQuestion";
+import Profile from "./Components/Profile";
 function App() {
 	const [show, setShow] = useState(false);
 	const handleClose = () => setShow(false);
@@ -51,7 +52,7 @@ function App() {
 					<Route path="/login" element={<Login />} />
 					<Route path="/signup" element={<Signup />} />
 					<Route path="/signupadmin" element={<SignupAdmin />} />
-
+					<Route path="/profile" element={<Profile />} />
 					<Route path="/teacher" element={<ProtectedRoute />}>
 						<Route path="/teacher" element={<Teacher />} />
 					</Route>
